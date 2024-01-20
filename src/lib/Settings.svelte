@@ -1,0 +1,58 @@
+<script lang="ts">
+  import { links } from './store/links'
+  import { col } from './store/col'
+  import { show_settings } from './store/windows'
+  // @ts-ignore
+  let input: HTMLInputElement
+
+  async function daoru() {
+    if (input.files && input.files[0]) {
+      const file = input.files[0]
+      const _str = await file.text()
+      const _parse = JSON.parse(_str)
+      console.log(_parse)
+      links.add(_parse)
+      // $links.forEach((v) => {})
+      show_settings.hide()
+    }
+  }
+</script>
+
+<div class="fixed w-[600px] h-[400px] bg-[#4A4A4A] text-white">
+  <button class="cursor-pointer hover:opacity-50">导出数据</button>
+  <button class="cursor-pointer hover:opacity-50" on:click={() => input.click()}
+    >导入数据</button
+  >
+  <input
+    bind:this={input}
+    class="hidden"
+    on:change={daoru}
+    type="file"
+    accept=".json"
+  />
+  <div>
+    <label for="col">列数</label>
+    <input
+      id="col"
+      type="number"
+      class="text-black"
+      value={$col}
+      on:change={(v) => {
+        col.set(Number(v.currentTarget.value))
+      }}
+    />
+  </div>
+  <button
+    class="absolute top-2 right-2 hover:opacity-50"
+    on:click={() => {
+      show_settings.hide()
+    }}>close</button
+  >
+  <!-- <button
+    on:click={async () => {
+      const db = await openDatabase('myDatabase', 10, () => {})
+      const data = await getAllData(db, 'links')
+      console.log(data)
+    }}>数据库</button
+  > -->
+</div>
