@@ -33,3 +33,25 @@ export async function addData(data: link[]) {
     store.add(v)
   })
 }
+
+export async function outFile() {
+  const db = await _openDB()
+  const links: link[] = await db
+    .transaction('links', 'readwrite')
+    .objectStore('links')
+    .getAll()
+  const outData = links.map((v) => ({
+    iconBase64: v.iconBase64,
+    linkUrl: v.linkUrl,
+  }))
+
+  const blob = new Blob([JSON.stringify(outData)], { type: 'text/plain' })
+  const _a = document.createElement('a')
+  const _url = URL.createObjectURL(blob)
+  _a.href = _url
+  _a.download = 'data.json'
+  document.body.appendChild(_a)
+  _a.click()
+  document.body.removeChild(_a)
+  URL.revokeObjectURL(_url)
+}

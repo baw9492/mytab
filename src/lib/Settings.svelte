@@ -2,6 +2,7 @@
   import { links } from './store/links'
   import { col } from './store/col'
   import { show_settings } from './store/windows'
+  import { outFile } from './tools/db'
   // @ts-ignore
   let input: HTMLInputElement
 
@@ -19,7 +20,9 @@
 </script>
 
 <div class="fixed w-[600px] h-[400px] bg-[#4A4A4A] text-white">
-  <button class="cursor-pointer hover:opacity-50">导出数据</button>
+  <button class="cursor-pointer hover:opacity-50" on:click={() => outFile()}
+    >导出数据</button
+  >
   <button class="cursor-pointer hover:opacity-50" on:click={() => input.click()}
     >导入数据</button
   >
